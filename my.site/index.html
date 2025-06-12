@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Learn English Online</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to bottom, #07d8b5c7 30%, #ffffff 70%);
+      scroll-behavior: smooth;
+      color: #003366;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .wrapper {
+      flex: 1 0 auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo {
+      position: fixed;
+      top: 0px;
+      height: 150px;
+      z-index: 1000;
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.1);
+    }
+
+    .burger {
+      position: fixed;
+      top: 50px;
+      right: 50px;
+      cursor: pointer;
+      z-index: 1050;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 28px;
+      height: 28px;
+      transition: transform 0.3s ease;
+    }
+
+    .burger:hover {
+      transform: scale(1.1);
+    }
+
+    .burger div {
+      width: 100%;
+      height: 3px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      transition: 0.4s ease;
+      transform-origin: center;
+    }
+
+    .burger.open div:nth-child(1) {
+      transform: rotate(45deg) translateY(8px);
+    }
+
+    .burger.open div:nth-child(2) {
+      opacity: 0;
+    }
+
+    .burger.open div:nth-child(3) {
+      transform: rotate(-45deg) translateY(-8px);
+    }
+
+    .menu {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 300px;
+      height: 100%;
+      background-color: rgba(0, 40, 23, 0.95);
+      color: white;
+      transform: translateX(100%);
+      transition: transform 0.3s ease;
+      padding: 10px;
+      z-index: 1040;
+      font-weight: 600;
+      font-size: 1.1em;
+      box-shadow: -3px 0 8px rgba(0, 0, 0, 0.6);
+    }
+
+    .menu.open {
+      transform: translateX(0);
+    }
+
+    .menu ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .menu ul li {
+      margin: 22px 0;
+      cursor: pointer;
+      padding: 6px 10px;
+      border-radius: 8px;
+      transition: background-color 0.3s ease;
+    }
+
+    .menu ul li:hover {
+      background-color: rgba(255, 255, 255, 0.7);
+    }
+
+    #main-content {
+      padding-top: 120px;
+      text-align: center;
+      opacity: 0;
+      transform: translateY(60px);
+      animation: fadeUp 1s ease forwards;
+      animation-delay: 0.5s;
+    }
+
+    @keyframes fadeUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    #main-content h1 {
+      color: white;
+      font-size: 2.8rem;
+      margin-bottom: 30px;
+    }
+
+    .content {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      padding: 0 20px;
+    }
+
+    iframe {
+      width: 360px;
+      height: 215px;
+      border-radius: 15px;
+      border: none;
+      box-shadow: 0 6px 20px rgba(0, 79, 183, 0.4);
+      transition: transform 0.3s ease;
+    }
+
+    iframe:hover {
+      transform: scale(1.05);
+    }
+
+    footer {
+      flex-shrink: 0;
+      text-align: center;
+      padding: 20px 22px;
+      background-color: #1ee269;
+      color: white;
+    }
+
+    footer div {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      padding: 10px;
+    }
+
+    footer img {
+      width: 28px;
+      height: 28px;
+      opacity: 0.8;
+      transition: opacity 0.3s ease;
+    }
+
+    footer img:hover {
+      opacity: 1;
+    }
+
+    @media (max-width: 420px) {
+      iframe {
+        width: 90%;
+        height: 200px;
+      }
+    }
+
+    #fullscreen-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(0,0,0,0.85);
+      color: white;
+      display: none;
+      z-index: 9999;
+      padding: 40px 20px;
+    }
+
+    .fullscreen-content {
+      max-width: 800px;
+      margin: 60px auto;
+      padding: 20px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 40px;
+      cursor: pointer;
+    }
+
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+
+    .photo-grid img {
+      width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+      transition: transform 0.3s ease;
+    }
+
+    .photo-grid img:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <a href="#">
+      <img src="logo.png/siaki.png" alt="Logo" class="logo" />
+    </a>
+
+    <div class="burger" onclick="toggleMenu(event)">
+      <div></div><div></div><div></div>
+    </div>
+
+    <div id="sideMenu" class="menu">
+      <ul>
+        <li onclick="openFullscreen('О себе', 'Мен, Джакупов Айбол, Халықаралық инженерлік-технологиялық университетінің бағдарламалық инженерия мамандығы бойынша білім алып жатқан студентпін. Оқу бағдарламасына сәйкес өндірістік тәжірибе барысында ағылшын тілін үйретуге арналған веб-сайт жасадым..')">🧍‍♂️ О себе</li>
+        <li onclick="openFullscreen('Задание практики', 'Моя практика включает разработку веб-сайтов, HTML, CSS и JavaScript.')">📚 Задание практики</li>
+        <li onclick="openFullscreen('Фото первого курса', '')">📸 Фото, альбом первый курс</li>
+        <li onclick="openFullscreen('Дневник практики', 'Здесь будут записи о каждом дне моей практике, задачи и результаты.')">📓 Дневник практики</li>
+        <li onclick="openFullscreen('Отчет практики', 'Полный отчет о проделанной практике, выводы и предложения.')">📄 Отчет практики</li>
+      </ul>
+    </div>
+
+    <div id="main-content">
+      <h1>Welcome to English Learning Hub</h1>
+<div class="content">
+  <iframe src="https://www.youtube.com/embed/CFE_XzOCsu4" title="English Grammar"></iframe>
+  <iframe src="https://www.youtube.com/embed/J5817fu3WRc" title="IELTS Speaking Tips"></iframe>
+  <iframe src="https://www.youtube.com/embed/xRrpvSeQq3Q" title="Learn 100 English Phrases"></iframe>
+  <iframe src="https://www.youtube.com/embed/MJPEmWHP88o" title="TOEFL Preparation"></iframe>
+</div>
+    </div>
+  </div>
+
+
+  <div id="fullscreen-overlay" onclick="closeFullscreen()">
+    <div class="close-btn" onclick="closeFullscreen()">×</div>
+    <div class="fullscreen-content" onclick="event.stopPropagation()">
+      <h2 id="fullscreen-title">Заголовок</h2>
+      <div id="fullscreen-text">Текст</div>
+    </div>
+  </div>
+
+  <footer>
+    <div>
+      <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/2111/2111463.png" alt="Instagram" /></a>
+      <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733585.png" alt="WhatsApp" /></a>
+      <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/3046/3046121.png" alt="TikTok" /></a>
+      <a href="#"><img src="https://cdn-icons-png.flaticon.com/512/733/733547.png" alt="Facebook" /></a>
+    </div>
+    <p>Contact us: +7 778 694 6801</p>
+  </footer>
+
+  <script>
+    function toggleMenu(event) {
+      event.stopPropagation();
+      const menu = document.getElementById('sideMenu');
+      const burger = document.querySelector('.burger');
+      menu.classList.toggle('open');
+      burger.classList.toggle('open');
+    }
+
+    document.addEventListener('click', function (e) {
+      const menu = document.getElementById('sideMenu');
+      const burger = document.querySelector('.burger');
+      if (!menu.contains(e.target) && !burger.contains(e.target)) {
+        menu.classList.remove('open');
+        burger.classList.remove('open');
+      }
+    });
+
+    function openFullscreen(title, text) {
+      const titleEl = document.getElementById('fullscreen-title');
+      const textEl = document.getElementById('fullscreen-text');
+
+      titleEl.textContent = title;
+
+      if (title === 'Фото первого курса') {
+        textEl.innerHTML = `
+          <div class="photo-grid">
+            <a href="photos/photo1.jpg" target="_blank">
+              <img src="photos/photo1.jpg" alt="Photo 1">
+            </a>
+            <a href="photos/photo2.jpg" target="_blank">
+              <img src="photos/photo2.jpg" alt="Photo 2">
+            </a>
+            <a href="photos/photo3.jpg" target="_blank">
+              <img src="photos/photo3.jpg" alt="Photo 3">
+            </a>
+            <a href="photos/photo4.jpg" target="_blank">
+              <img src="photos/photo4.jpg" alt="Photo 4">
+            </a>
+          </div>
+        `;
+      } else {
+        textEl.textContent = text;
+      }
+
+      document.getElementById('fullscreen-overlay').style.display = 'block';
+    }
+
+    function closeFullscreen() {
+      document.getElementById('fullscreen-overlay').style.display = 'none';
+    }
+  </script>
+</body>
+</html>
